@@ -196,11 +196,13 @@ void BST_312 <ItemType>::deleteNode(TreeNode*& t)
     {
         t = t->right;
         delete tempPtr;
+        numNodes--;
     }
     else if (t->right == NULL)
     {
         t = t->left;
         delete tempPtr;
+        numNodes--;
     }
     else
     {
