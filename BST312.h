@@ -249,7 +249,9 @@ template<class ItemType>
 void BST_312 <ItemType>::makeEmpty(TreeNode*& t)
 {
     //YOUR CODE GOES HERE
-
+    while(t != NULL){
+        deleteItem(t->data);
+    }
 }
 
 template<class ItemType>
