@@ -455,11 +455,11 @@ bool BST_312 <ItemType>::isItemInTree(const ItemType& item)
    //YOUR CODE GOES HERE
    TreeNode *temp = root;
    while(temp != NULL) {
-      if (item.compare(temp) > 0) {
+      if (item < temp->data) {
           temp = temp->left;
-      } else if (item.compare(temp) < 0) {
+      } else if (item > temp->data) {
           temp = temp->right;
-      } else if (item.compare(temp) == 0) {
+      } else if (item == temp->data) {
           return true;
       }
    }
