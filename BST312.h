@@ -128,11 +128,9 @@ private:
 
     TreeNode * root;
 
-    int numNodes;
-
     void insertItem(TreeNode*& t, const ItemType& newItem);
     void inOrderTraversal(TreeNode* t,vector<ItemType>& result) const;
-    int countNodes(TreeNode* t) const;
+    int countNodes(TreeNode* t, int numNodes) const;
     void deleteNode(TreeNode*& node);
     void makeEmpty(TreeNode*& t);
     void deleteItem(TreeNode*& t, const ItemType& newItem);
@@ -151,7 +149,6 @@ template<class ItemType>
 BST_312<ItemType>::BST_312 ()
 {
     root = NULL;
-    numNodes = 0;
 }
 
 template<class ItemType>
@@ -196,13 +193,11 @@ void BST_312 <ItemType>::deleteNode(TreeNode*& t)
     {
         t = t->right;
         delete tempPtr;
-        numNodes--;
     }
     else if (t->right == NULL)
     {
         t = t->left;
         delete tempPtr;
-        numNodes--;
     }
     else
     {
@@ -250,7 +245,7 @@ void BST_312 <ItemType>::makeEmpty(TreeNode*& t)
 {
     //YOUR CODE GOES HERE
     while(t != NULL){
-        deleteItem(t->data);
+        deleteNode(t);
     }
 }
 
@@ -292,11 +287,9 @@ void BST_312 <ItemType>::insertItem(TreeNode*& t, const ItemType& newItem)
     //YOUR CODE GOES HERE
     if(this->root == NULL){
         root = new TreeNode();
-        numNodes++;
         root->data = newItem;
     }else {
         TreeNode *newNode = new TreeNode();
-        numNodes++;
         newNode->data = newItem;
         newNode->left == NULL;
         newNode->right == NULL;
@@ -340,9 +333,18 @@ void BST_312 <ItemType>::insertItem(const ItemType& newItem)
 
 
 template<class ItemType>
-int BST_312 <ItemType>::countNodes(TreeNode* t) const
+int BST_312 <ItemType>::countNodes(TreeNode* t, int numNodes) const
 {
     //YOUR CODE GOES HERE
+    if(t != NULL){
+        numNodes++;
+    }
+    if(t->left != NULL){
+        numNodes = countNodes(t->left, numNodes);
+    }
+    if(t->right != NULL){
+        numNodes = countNodes(t->right, numNodes);
+    }
     return numNodes;
 }
 
@@ -351,7 +353,8 @@ template<class ItemType>
 int BST_312 <ItemType>::countNodes()
 {
     //YOUR CODE GOES HERE
-    int numberNodes = countNodes(root);
+    int numNodes = 0;
+    int numberNodes = countNodes(root, numNodes);
     return numberNodes;
 }
 
@@ -381,9 +384,7 @@ vector<ItemType> BST_312 <ItemType>::preOrderTraversal()
     vector<ItemType> preOrder;
     TreeNode* temp1 = root;
     TreeNode* temp2 = NULL;
-    //temp1 will be the original tree while temp2 will be the scratch tree
-    copyTree(temp2, temp1);
-    preOrderTraversal(temp2, preOrder);
+    preOrderTraversal(temp1, preOrder);
     return preOrder;
 }
 
@@ -412,9 +413,7 @@ vector<ItemType> BST_312 <ItemType>::inOrderTraversal()
     vector<ItemType> inOrder;
     TreeNode* temp1 = root;
     TreeNode* temp2 = NULL;
-    //temp1 will be the original tree while temp2 will be the scratch tree
-    copyTree(temp2, temp1);
-    inOrderTraversal(temp2, inOrder);
+    inOrderTraversal(temp1, inOrder);
     return inOrder;
 }
 
@@ -443,9 +442,7 @@ vector<ItemType> BST_312 <ItemType>::postOrderTraversal()
     vector<ItemType> postOrder;
     TreeNode* temp1 = root;
     TreeNode* temp2 = NULL;
-    //temp1 will be the original tree while temp2 will be the scratch tree
-    copyTree(temp2, temp1);
-    postOrderTraversal(temp2, postOrder);
+    postOrderTraversal(temp1, postOrder);
     return postOrder;
 }
 
